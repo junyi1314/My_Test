@@ -1,0 +1,25 @@
+20151128-重新部署PMP系统
+1.删除部门表 重新创建，支持excel导入
+2.删除[sys_admin].sys_Admin_NAME约束，admin表不删除，仅清空数据（可以删除，经本地尝试过）。
+注意权限:
+USE [xsunlong]
+GO
+INSERT INTO [sys_Re_Admin_AdminRole]([AdminID], [AdminRoleID])
+SELECT ID, 2 FROM [sys_Admin] WHERE ID>1
+
+3.PMP所有只是清除数据
+4.Workflow所有清除数据
+
+
+如果是删除表重建 则需要注意如下问题
+20151114
+1.注意不要删除重建：[pmp_Project]增加字段[ProjectLibraryID]、[WorkflowIDList]、[TaskFactCost],
+	注意已经存在的项目 需要更改其项目分类 和 项目4大流程
+1.1注意历史记录表名称改成[pmp_Project_History]、[pmp_Task_History]要一样,也手动添加字段,新增字段：[ChangeBackAdminID]、[ChangeBackDate],注意
+2.重建[pmp_ProjectLibrary],增加excel模版
+3.ExcelForAddPlan.xls已经上传到服务器过了
+4.新增[pmp_ProjectState]
+5.GRY规则权限模块原先就有ID=66[项目状态]重新放出来使用
+6.下阶段excel导数据 用户从项目成员读取
+7.[pmp_Task]添加[TaskFactCost]注意[pmp_Task_Change]也要添加,注意存储过程：proc_pmp_Task_ChangePercent要重新更新下
+8.[sys_WorkflowTask]添加[FromModule]
